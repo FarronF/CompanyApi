@@ -28,13 +28,25 @@ namespace CompanyApi.Controllers
         [HttpGet("id/{id}")]
         public ActionResult<Company> GetCompanyById(int id)
         {
-            throw new NotImplementedException();
+            var company = _context.Companies.Find(id);
+            if (company == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(company);
         }
 
         [HttpGet("/isin/{isin}")]
         public ActionResult<Company> GetCompanyByIsin(string isin)
         {
-            throw new NotImplementedException();
+            var company = _context.Companies.FirstOrDefault(c => c.Isin == isin);
+            if (company == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(company);
         }
 
         [HttpPost]
