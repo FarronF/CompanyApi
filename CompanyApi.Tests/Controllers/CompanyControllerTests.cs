@@ -256,60 +256,6 @@ namespace CompanyApi.Tests.Controllers
             Assert.NotNull(badRequestResult.Value);
             Assert.IsType<SerializableError>(badRequestResult.Value);
         }
-
-        [Fact]
-        public void UpdateCompanyByIsin_WhenIsValid_ReturnsSuccess()
-        {
-            // Arrange
-            var updateCompanyDto = new UpdateCompanyDto
-            {
-                Name = "Updated Company A",
-                Exchange = "Updated Exchange",
-                Ticker = "UPD1",
-                Isin = "EG0000000099",
-                Website = "https://updated.example.com"
-            };
-
-            // Act
-            var result = _controller.UpdateCompanyByIsin(_companyA.Isin, updateCompanyDto);
-
-            // Assert
-            var okResult = Assert.IsType<OkObjectResult>(result);
-            var updatedCompany = Assert.IsType<Company>(okResult.Value);
-            Assert.Equal(updateCompanyDto.Name, updatedCompany.Name);
-            Assert.Equal(updateCompanyDto.Exchange, updatedCompany.Exchange);
-            Assert.Equal(updateCompanyDto.Ticker, updatedCompany.Ticker);
-            Assert.Equal(updateCompanyDto.Isin, updatedCompany.Isin);
-            Assert.Equal(updateCompanyDto.Website, updatedCompany.Website);
-
-            var companyInDb = _context.Companies.Find(_companyA.Id);
-            Assert.NotNull(companyInDb);
-            Assert.Equal(updateCompanyDto.Name, companyInDb.Name);
-            Assert.Equal(updateCompanyDto.Exchange, companyInDb.Exchange);
-            Assert.Equal(updateCompanyDto.Ticker, companyInDb.Ticker);
-            Assert.Equal(updateCompanyDto.Isin, companyInDb.Isin);
-            Assert.Equal(updateCompanyDto.Website, companyInDb.Website);
-        }
-
-        [Fact]
-        public void UpdateCompanyByIsin_WhenIsNotValid_ReturnsFailure()
-        {
-            // Arrange
-            var updateCompanyDto = new UpdateCompanyDto
-            {
-                Name = "Updated Name",
-                Exchange = "Updated Exchange",
-                Ticker = "UPD1",
-                Isin = "Invalid Isin",
-                Website = "https://updated.example.com"
-            };
-            // Act
-            var result = _controller.UpdateCompanyById(_companyA.Id, updateCompanyDto);
-            // Assert
-            var badRequestResult = Assert.IsType<BadRequestObjectResult>(result);
-            Assert.NotNull(badRequestResult.Value);
-            Assert.IsType<SerializableError>(badRequestResult.Value);
-        }
     }
 
     public class CompanyControllerExceptionTests

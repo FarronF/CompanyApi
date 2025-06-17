@@ -113,11 +113,5 @@ namespace CompanyApi.Controllers
 
             return NoContent();
         }
-
-        [HttpPut("/isin/{isin}")]
-        public IActionResult UpdateCompanyByIsin(string isin, [FromBody] UpdateCompanyDto dto)
-        {
-            throw new NotImplementedException();
-        }
     }
 }
