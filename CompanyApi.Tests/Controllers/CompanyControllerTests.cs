@@ -208,7 +208,7 @@ namespace CompanyApi.Tests.Controllers
                 Name = "", // Invalid name
                 Exchange = "New Exchange",
                 Ticker = "NEW1",
-                Isin = "EG0000000002",
+                Isin = _companyA.Isin,
                 Website = "https://new.example.com"
             };
             // Act
