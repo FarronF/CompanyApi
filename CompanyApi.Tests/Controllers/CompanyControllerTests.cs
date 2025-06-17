@@ -85,17 +85,20 @@ namespace CompanyApi.Tests.Controllers
         [Fact]
         public void GetCompanyById_WhenIsPresent_ReturnsCompany()
         {
+            // Arrange
+            var companyToGet = _companyA;
+
             // Act
-            var result = _controller.GetCompanyById(_companyA.Id);
+            var result = _controller.GetCompanyById(companyToGet.Id);
 
             // Assert
             var okResult = Assert.IsType<OkObjectResult>(result.Result);
             var company = Assert.IsType<Company>(okResult.Value);
-            Assert.Equal(_companyA.Name, company.Name);
-            Assert.Equal(_companyA.Exchange, company.Exchange);
-            Assert.Equal(_companyA.Ticker, company.Ticker);
-            Assert.Equal(_companyA.Isin, company.Isin);
-            Assert.Equal(_companyA.Website, company.Website);
+            Assert.Equal(companyToGet.Name, company.Name);
+            Assert.Equal(companyToGet.Exchange, company.Exchange);
+            Assert.Equal(companyToGet.Ticker, company.Ticker);
+            Assert.Equal(companyToGet.Isin, company.Isin);
+            Assert.Equal(companyToGet.Website, company.Website);
         }
 
         [Fact]
@@ -114,17 +117,20 @@ namespace CompanyApi.Tests.Controllers
         [Fact]
         public void GetCompanyByIsin_WhenIsPresent_ReturnsCompany()
         {
+            // Arrange
+            var companyToGet = _companyB;
+
             // Act
-            var result = _controller.GetCompanyByIsin(_companyB.Isin);
+            var result = _controller.GetCompanyByIsin(companyToGet.Isin);
 
             // Assert
             var okResult = Assert.IsType<OkObjectResult>(result.Result);
             var company = Assert.IsType<Company>(okResult.Value);
-            Assert.Equal(_companyA.Name, company.Name);
-            Assert.Equal(_companyA.Exchange, company.Exchange);
-            Assert.Equal(_companyA.Ticker, company.Ticker);
-            Assert.Equal(_companyA.Isin, company.Isin);
-            Assert.Equal(_companyA.Website, company.Website);
+            Assert.Equal(companyToGet.Name, company.Name);
+            Assert.Equal(companyToGet.Exchange, company.Exchange);
+            Assert.Equal(companyToGet.Ticker, company.Ticker);
+            Assert.Equal(companyToGet.Isin, company.Isin);
+            Assert.Equal(companyToGet.Website, company.Website);
         }
 
         [Fact]
