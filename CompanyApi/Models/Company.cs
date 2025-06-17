@@ -13,7 +13,6 @@ namespace CompanyApi.Models
         public string Exchange { get; set; }
 
         [Required]
-        [MaxLength(4)]
         public string Ticker { get; set; }
 
         [Required]
