@@ -330,6 +330,7 @@ namespace CompanyApi.Tests.Controllers
         [Fact]
         public void CreateCompany_WhenSaveChangesThrows_ReturnsBadRequest()
         {
+            // Arrange
             var createCompanyDto = new CreateCompanyDto
             {
                 Name = "Test",
@@ -341,8 +342,45 @@ namespace CompanyApi.Tests.Controllers
 
             _mockContext.Setup(c => c.SaveChanges()).Throws(new DbUpdateException("Simulated failure"));
 
+            // Act
             var result = _controller.CreateCompany(createCompanyDto);
 
+            // Assert
+            var badRequestResult = Assert.IsType<BadRequestObjectResult>(result);
+            Assert.NotNull(badRequestResult.Value);
+        }
+
+        [Fact]
+        public void UpdateCompanyById_WhenSaveChangesThrows_ReturnsBadRequest()
+        {
+            // Arrange
+            var updateCompanyDto = new UpdateCompanyDto
+            {
+                Name = "Updated Name",
+                Exchange = "Updated Exchange",
+                Ticker = "TST",
+                Isin = "EG0000000004",
+                Website = "https://test.com"
+            };
+
+            var mockSet = new Mock<DbSet<Company>>();
+            var company = new Company
+            {
+                Id = 1,
+                Name = "Company Name",
+                Exchange = "Exchange",
+                Ticker = "Ticker",
+                Isin = "Isin",
+                Website = ""
+            };
+            mockSet.Setup(m => m.Find(It.IsAny<object[]>())).Returns(company);
+            _mockContext.Setup(c => c.Companies).Returns(mockSet.Object);
+            _mockContext.Setup(c => c.SaveChanges()).Throws(new DbUpdateException("Simulated failure"));
+
+            // Act
+            var result = _controller.UpdateCompanyById(1, updateCompanyDto);
+
+            // Assert
             var badRequestResult = Assert.IsType<BadRequestObjectResult>(result);
             Assert.NotNull(badRequestResult.Value);
         }
