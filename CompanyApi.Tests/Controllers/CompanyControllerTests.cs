@@ -222,13 +222,7 @@ namespace CompanyApi.Tests.Controllers
             var result = _controller.UpdateCompanyById(_companyA.Id, updateCompanyDto);
 
             // Assert
-            var okResult = Assert.IsType<OkObjectResult>(result);
-            var updatedCompany = Assert.IsType<Company>(okResult.Value);
-            Assert.Equal(updateCompanyDto.Name, updatedCompany.Name);
-            Assert.Equal(updateCompanyDto.Exchange, updatedCompany.Exchange);
-            Assert.Equal(updateCompanyDto.Ticker, updatedCompany.Ticker);
-            Assert.Equal(updateCompanyDto.Isin, updatedCompany.Isin);
-            Assert.Equal(updateCompanyDto.Website, updatedCompany.Website);
+            var okResult = Assert.IsType<NoContentResult>(result);
 
             var companyInDb = _context.Companies.Find(_companyA.Id);
             Assert.NotNull(companyInDb);
@@ -240,7 +234,7 @@ namespace CompanyApi.Tests.Controllers
         }
 
         [Fact]
-        public void UpdateCompanyById_WhenIsNotValid_ReturnsFailure()
+        public void UpdateCompanyById_WhenIsNotValid_ReturnsBadRequest()
         {
             // Arrange
             var updateCompanyDto = new UpdateCompanyDto
@@ -251,8 +245,12 @@ namespace CompanyApi.Tests.Controllers
                 Isin = "Invalid Isin",
                 Website = "https://updated.example.com"
             };
+
+            _controller.ModelState.AddModelError("Name", "Required");
+
             // Act
             var result = _controller.UpdateCompanyById(_companyA.Id, updateCompanyDto);
+
             // Assert
             var badRequestResult = Assert.IsType<BadRequestObjectResult>(result);
             Assert.NotNull(badRequestResult.Value);

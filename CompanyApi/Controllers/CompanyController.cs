@@ -84,7 +84,34 @@ namespace CompanyApi.Controllers
         [HttpPut("/id/{id}")]
         public IActionResult UpdateCompanyById(int id, [FromBody] UpdateCompanyDto dto)
         {
-            throw new NotImplementedException();
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+
+            var company = _context.Companies.Find(id);
+            if (company == null)
+            {
+                return NotFound();
+            }
+
+            company.Name = dto.Name ?? company.Name;
+            company.Exchange = dto.Exchange ?? company.Exchange;
+            company.Ticker = dto.Ticker ?? company.Ticker;
+            company.Isin = dto.Isin ?? company.Isin;
+            company.Website = dto.Website ?? company.Website;
+
+            try
+            {
+                _context.SaveChanges();
+            }
+            catch (DbUpdateException)
+            {
+                return BadRequest(new { error = "A database error occurred." });
+            }
+
+            return NoContent();
         }
 
         [HttpPut("/isin/{isin}")]
