@@ -10,6 +10,8 @@ namespace CompanyApi.DTOs
         public string Exchange { get; set; }
         [Required]
         public string Ticker { get; set; }
+        [Required]
+        public string Isin { get; set; }
         public string? Website { get; set; }
     }
 }
