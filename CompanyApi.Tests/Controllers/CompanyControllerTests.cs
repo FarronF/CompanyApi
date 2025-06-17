@@ -164,6 +164,7 @@ namespace CompanyApi.Tests.Controllers
             // Act
             var result = _controller.CreateCompany(createCompanyDto);
 
+            // Assert
             var createdAtActionResult = Assert.IsType<CreatedAtActionResult>(result);
             var createdCompany = Assert.IsType<Company>(createdAtActionResult.Value);
             Assert.Equal(createCompanyDto.Name, createdCompany.Name);
@@ -179,6 +180,29 @@ namespace CompanyApi.Tests.Controllers
             Assert.Equal(createCompanyDto.Ticker, companyInDb.Ticker);
             Assert.Equal(createCompanyDto.Isin, companyInDb.Isin);
             Assert.Equal(createCompanyDto.Website, companyInDb.Website);
+        }
+
+        [Fact]
+        public void CreateCompany_WhenIsNotValid_ReturnsBadRequest()
+        {
+            // Arrange
+            var createCompanyDto = new CreateCompanyDto
+            {
+                Name = "New Company",
+                Exchange = "New Exchange",
+                Ticker = "NEW1",
+                Isin = "EG0000000003",
+                Website = "https://new.example.com"
+            };
+            _controller.ModelState.AddModelError("Name", "Required");
+
+            // Act
+            var result = _controller.CreateCompany(createCompanyDto);
+
+            // Assert
+            var badRequestResult = Assert.IsType<BadRequestObjectResult>(result);
+            Assert.NotNull(badRequestResult.Value);
+            Assert.IsType<SerializableError>(badRequestResult.Value);
         }
 
         [Fact]
