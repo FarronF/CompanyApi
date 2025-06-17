@@ -13,10 +13,13 @@ namespace CompanyApi.Models
         public string Exchange { get; set; }
 
         [Required]
+        [MaxLength(4)]
         public string Ticker { get; set; }
 
         [Required]
-        [RegularExpression(@"^[^\d]{2}.{10}$", ErrorMessage = "ISIN must be exactly 12 characters and start with two non-numeric characters.")]
+        [MinLength(12)]
+        [MaxLength(12)]
+        [RegularExpression(@"^[^\d]{2}.*$", ErrorMessage = "ISIN must start with two non-numeric characters.")]
         public string Isin { get; set; }
 
         public string? Website { get; set; }
