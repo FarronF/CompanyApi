@@ -61,18 +61,19 @@ namespace CompanyApi.Tests.Controllers
         {
             // Act
             var result = _controller.GetAllCompanies();
+            var okResult = Assert.IsType<OkObjectResult>(result.Result);
+            var companies = Assert.IsAssignableFrom<IEnumerable<Company>>(okResult.Value);
 
             // Assert
-            Assert.NotNull(result);
-            Assert.Equal(2, result.Count());
-            Assert.Contains(result, c =>
+            Assert.Equal(2, companies.Count());
+            Assert.Contains(companies, c =>
                 c.Name == _companyA.Name &&
                 c.Exchange == _companyA.Exchange &&
                 c.Ticker == _companyA.Ticker &&
                 c.Isin == _companyA.Isin &&
                 c.Website == _companyA.Website
             );
-            Assert.Contains(result, c =>
+            Assert.Contains(companies, c =>
                 c.Name == _companyB.Name &&
                 c.Exchange == _companyB.Exchange &&
                 c.Ticker == _companyB.Ticker &&
