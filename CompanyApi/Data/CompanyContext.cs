@@ -8,7 +8,7 @@ namespace CompanyApi.Data
         public CompanyContext(DbContextOptions<CompanyContext> options) : base(options)
         {
         }
-        public DbSet<Company> Companies { get; set; } = null!;
+        public virtual DbSet<Company> Companies { get; set; } = null!; // Marked virtual to allow testing with mocks
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Company>().HasIndex(c => c.Isin).IsUnique();

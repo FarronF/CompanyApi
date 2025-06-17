@@ -2,6 +2,7 @@ using CompanyApi.Data;
 using CompanyApi.DTOs;
 using CompanyApi.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace CompanyApi.Controllers
 {
@@ -52,7 +53,32 @@ namespace CompanyApi.Controllers
         [HttpPost]
         public IActionResult CreateCompany([FromBody] CreateCompanyDto dto)
         {
-            throw new NotImplementedException();
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var company = new Company
+            {
+                Name = dto.Name,
+                Exchange = dto.Exchange,
+                Ticker = dto.Ticker,
+                Isin = dto.Isin,
+                Website = dto.Website
+            };
+
+            _context.Companies.Add(company);
+
+            try
+            {
+                _context.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+                return BadRequest(new { error = "A database error occurred." });
+            }
+
+            return CreatedAtAction(nameof(GetCompanyById), new { id = company.Id }, company);
         }
 
         [HttpPut("/id/{id}")]

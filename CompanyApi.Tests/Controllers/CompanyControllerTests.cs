@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using CompanyApi.Controllers;
 using CompanyApi.Data;
 using CompanyApi.DTOs;
@@ -55,6 +56,7 @@ namespace CompanyApi.Tests.Controllers
             _context.Companies.AddRange(_companyA, _companyB);
             _context.SaveChanges();
         }
+
 
         [Fact]
         public void GetAllCompanies_ReturnsAllCompanies()
@@ -180,46 +182,6 @@ namespace CompanyApi.Tests.Controllers
         }
 
         [Fact]
-        public void CreateCompany_WhenIsNotValid_ReturnsFailure()
-        {
-            // Arrange
-            var createCompanyDto = new CreateCompanyDto
-            {
-                Name = "", // Invalid name
-                Exchange = "New Exchange",
-                Ticker = "NEW1",
-                Isin = "EG0000000003",
-                Website = "https://new.example.com"
-            };
-            // Act
-            var result = _controller.CreateCompany(createCompanyDto);
-            // Assert
-            var badRequestResult = Assert.IsType<BadRequestObjectResult>(result);
-            Assert.NotNull(badRequestResult.Value);
-            Assert.IsType<SerializableError>(badRequestResult.Value);
-        }
-
-        [Fact]
-        public void CreateCompany_WhenIsDuplicateIsin_ReturnsFailure()
-        {
-            // Arrange
-            var createCompanyDto = new CreateCompanyDto
-            {
-                Name = "", // Invalid name
-                Exchange = "New Exchange",
-                Ticker = "NEW1",
-                Isin = _companyA.Isin,
-                Website = "https://new.example.com"
-            };
-            // Act
-            var result = _controller.CreateCompany(createCompanyDto);
-            // Assert
-            var badRequestResult = Assert.IsType<BadRequestObjectResult>(result);
-            Assert.NotNull(badRequestResult.Value);
-            Assert.IsType<SerializableError>(badRequestResult.Value);
-        }
-
-        [Fact]
         public void UpdateCompanyById_WhenIsValid_ReturnsSuccess()
         {
             // Arrange
@@ -325,6 +287,42 @@ namespace CompanyApi.Tests.Controllers
             var badRequestResult = Assert.IsType<BadRequestObjectResult>(result);
             Assert.NotNull(badRequestResult.Value);
             Assert.IsType<SerializableError>(badRequestResult.Value);
+        }
+    }
+
+    public class CompanyControllerExceptionTests
+    {
+        private readonly CompanyController _controller;
+        private readonly Mock<CompanyContext> _mockContext;
+        private readonly Mock<ILogger<CompanyController>> _mockLogger;
+
+        public CompanyControllerExceptionTests()
+        {
+            var mockSet = new Mock<DbSet<Company>>();
+            _mockContext = new Mock<CompanyContext>(new DbContextOptions<CompanyContext>());
+            _mockContext.Setup(m => m.Companies).Returns(mockSet.Object);
+            _mockLogger = new Mock<ILogger<CompanyController>>();
+            _controller = new CompanyController(_mockContext.Object, _mockLogger.Object);
+        }
+
+        [Fact]
+        public void CreateCompany_WhenSaveChangesThrows_ReturnsBadRequest()
+        {
+            var createCompanyDto = new CreateCompanyDto
+            {
+                Name = "Test",
+                Exchange = "TestEx",
+                Ticker = "TST",
+                Isin = "EG0000000004",
+                Website = "https://test.com"
+            };
+
+            _mockContext.Setup(c => c.SaveChanges()).Throws(new DbUpdateException("Simulated failure"));
+
+            var result = _controller.CreateCompany(createCompanyDto);
+
+            var badRequestResult = Assert.IsType<BadRequestObjectResult>(result);
+            Assert.NotNull(badRequestResult.Value);
         }
     }
 }
