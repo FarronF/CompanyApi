@@ -18,7 +18,7 @@ namespace CompanyApi.Models
         [Required]
         [MinLength(12)]
         [MaxLength(12)]
-        [RegularExpression(@"^[^\d]{2}.*$", ErrorMessage = "ISIN must start with two non-numeric characters.")]
+        [RegularExpression(@"^[A-Z]{2}[A-Z0-9]{10}$", ErrorMessage = "ISIN must be 12 characters, start with two uppercase letters, and contain only uppercase letters or numbers.")]
         public string Isin { get; set; }
 
         public string? Website { get; set; }
