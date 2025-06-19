@@ -1,0 +1,22 @@
+
+@if (loading()) {
+  <mat-spinner></mat-spinner>
+}
+
+@else {
+  @if (noCompany()) {
+    <p>Could not load company.</p>
+  }
+
+  @else {
+    @if (editing()) {
+      <app-company-form [company]="company" [updating]="updating" (onSave)="onSave($event)" (onCancel)="editing.set(false)"></app-company-form>
+    }
+    @else {
+        <app-company-details [company]="company"></app-company-details> 
+        <button matButton="filled" (click)="editing.set(true)">Edit</button>        
+    }
+  }
+}
+
+

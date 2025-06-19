@@ -10,12 +10,12 @@ import { RequestBuilder } from '../../request-builder';
 
 import { Company } from '../../models/company';
 
-export interface IsinIsinGet$Json$Params {
+export interface ApiCompanyIsinIsinGet$Json$Params {
   isin: string;
 }
 
-export function isinIsinGet$Json(http: HttpClient, rootUrl: string, params: IsinIsinGet$Json$Params, context?: HttpContext): Observable<StrictHttpResponse<Company>> {
-  const rb = new RequestBuilder(rootUrl, isinIsinGet$Json.PATH, 'get');
+export function apiCompanyIsinIsinGet$Json(http: HttpClient, rootUrl: string, params: ApiCompanyIsinIsinGet$Json$Params, context?: HttpContext): Observable<StrictHttpResponse<Company>> {
+  const rb = new RequestBuilder(rootUrl, apiCompanyIsinIsinGet$Json.PATH, 'get');
   if (params) {
     rb.path('isin', params.isin, {});
   }
@@ -30,4 +30,4 @@ export function isinIsinGet$Json(http: HttpClient, rootUrl: string, params: Isin
   );
 }
 
-isinIsinGet$Json.PATH = '/isin/{isin}';
+apiCompanyIsinIsinGet$Json.PATH = '/api/Company/isin/{isin}';

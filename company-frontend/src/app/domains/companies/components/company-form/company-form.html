@@ -1,0 +1,47 @@
+<h1>
+    @if (!company()) {
+        Create Company
+    } @else {
+        Edit Company ID: {{ company()?.id }}
+    }
+</h1>
+<form class="company-form" [formGroup]="companyForm" (ngSubmit)="onSubmit()">
+  <mat-form-field>
+    <mat-label>Company Name</mat-label>
+    <input matInput formControlName="name" placeholder="Enter company name" />
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>ISIN</mat-label>
+    <input matInput formControlName="isin" placeholder="Enter ISIN" />
+    @if (isinFormControl.invalid) {
+      <mat-error>ISIN must be exactly 12 characters of numbers and uppercase letters. The first 2 characters must be letters.</mat-error>
+    }    
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Exchange</mat-label>
+    <input matInput formControlName="exchange" placeholder="Enter exchange" />
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Ticker</mat-label>
+    <input matInput formControlName="ticker" placeholder="Enter ticker" />
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Website</mat-label>
+    <input matInput formControlName="website" placeholder="Enter website URL" />
+  </mat-form-field>
+
+  <div class="button-row">
+    @if (company()) {
+        <button matButton="outlined" color="accent" (click)="onCancel.emit()" type="button" [disabled]="updating()">
+            Cancel
+        </button>
+    }    
+    <button matButton="filled" color="primary" type="submit" [disabled]="companyForm.invalid || updating()">
+      Save
+    </button>
+  </div>
+</form>

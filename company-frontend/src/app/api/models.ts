@@ -5,3 +5,4 @@
 export type { Company } from './models/company';
 export type { CreateCompanyDto } from './models/create-company-dto';
 export type { UpdateCompanyDto } from './models/update-company-dto';
+export type { ValidationProblemDetails } from './models/validation-problem-details';

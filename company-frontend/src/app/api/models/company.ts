@@ -4,7 +4,7 @@
 
 export interface Company {
   exchange: string;
-  id?: number;
+  id: number;
   isin: string;
   name: string;
   ticker: string;

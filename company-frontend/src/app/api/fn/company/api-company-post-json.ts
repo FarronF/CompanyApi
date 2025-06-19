@@ -9,19 +9,20 @@ import { StrictHttpResponse } from '../../strict-http-response';
 import { RequestBuilder } from '../../request-builder';
 
 import { Company } from '../../models/company';
+import { CreateCompanyDto } from '../../models/create-company-dto';
 
-export interface IsinIsinGet$Plain$Params {
-  isin: string;
+export interface ApiCompanyPost$Json$Params {
+      body?: CreateCompanyDto
 }
 
-export function isinIsinGet$Plain(http: HttpClient, rootUrl: string, params: IsinIsinGet$Plain$Params, context?: HttpContext): Observable<StrictHttpResponse<Company>> {
-  const rb = new RequestBuilder(rootUrl, isinIsinGet$Plain.PATH, 'get');
+export function apiCompanyPost$Json(http: HttpClient, rootUrl: string, params?: ApiCompanyPost$Json$Params, context?: HttpContext): Observable<StrictHttpResponse<Company>> {
+  const rb = new RequestBuilder(rootUrl, apiCompanyPost$Json.PATH, 'post');
   if (params) {
-    rb.path('isin', params.isin, {});
+    rb.body(params.body, 'application/*+json');
   }
 
   return http.request(
-    rb.build({ responseType: 'text', accept: 'text/plain', context })
+    rb.build({ responseType: 'json', accept: 'text/json', context })
   ).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
@@ -30,4 +31,4 @@ export function isinIsinGet$Plain(http: HttpClient, rootUrl: string, params: Isi
   );
 }
 
-isinIsinGet$Plain.PATH = '/isin/{isin}';
+apiCompanyPost$Json.PATH = '/api/Company';

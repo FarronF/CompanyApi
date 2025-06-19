@@ -1,4 +1,39 @@
 /* You can add global styles to this file, and also import other style files */
+// @import '@angular/material/prebuilt-themes/magenta-violet.css';
+@use "@angular/material" as mat;
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+$theme: mat.define-theme(
+  (
+    color: (
+      theme-type: light,
+      primary: mat.$azure-palette,
+      tertiary: mat.$blue-palette,
+    ),
+  )
+);
+
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+:root {
+  @include mat.toolbar-overrides(
+    (
+      container-background-color: mat.get-theme-color($theme, primary-container),
+      container-text-color: mat.get-theme-color($theme, primary),
+    )
+  );
+
+  .error-snackbar {
+    @include mat.snack-bar-overrides(
+      (
+        container-color: rgb(187, 0, 0),
+      )
+    );
+  }
+}

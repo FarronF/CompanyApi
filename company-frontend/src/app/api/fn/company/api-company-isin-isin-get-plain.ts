@@ -10,18 +10,18 @@ import { RequestBuilder } from '../../request-builder';
 
 import { Company } from '../../models/company';
 
-export interface CompanyIdIdGet$Json$Params {
-  id: number;
+export interface ApiCompanyIsinIsinGet$Plain$Params {
+  isin: string;
 }
 
-export function companyIdIdGet$Json(http: HttpClient, rootUrl: string, params: CompanyIdIdGet$Json$Params, context?: HttpContext): Observable<StrictHttpResponse<Company>> {
-  const rb = new RequestBuilder(rootUrl, companyIdIdGet$Json.PATH, 'get');
+export function apiCompanyIsinIsinGet$Plain(http: HttpClient, rootUrl: string, params: ApiCompanyIsinIsinGet$Plain$Params, context?: HttpContext): Observable<StrictHttpResponse<Company>> {
+  const rb = new RequestBuilder(rootUrl, apiCompanyIsinIsinGet$Plain.PATH, 'get');
   if (params) {
-    rb.path('id', params.id, {});
+    rb.path('isin', params.isin, {});
   }
 
   return http.request(
-    rb.build({ responseType: 'json', accept: 'text/json', context })
+    rb.build({ responseType: 'text', accept: 'text/plain', context })
   ).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
@@ -30,4 +30,4 @@ export function companyIdIdGet$Json(http: HttpClient, rootUrl: string, params: C
   );
 }
 
-companyIdIdGet$Json.PATH = '/Company/id/{id}';
+apiCompanyIsinIsinGet$Plain.PATH = '/api/Company/isin/{isin}';

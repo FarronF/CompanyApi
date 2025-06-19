@@ -1,0 +1,13 @@
+.company-form {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.button-row > * {
+  margin: 0.5rem 0.5rem 0.5rem 0;
+}
+
+mat-error {
+  white-space: nowrap;
+}

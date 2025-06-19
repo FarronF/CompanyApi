@@ -9,23 +9,26 @@ import { StrictHttpResponse } from '../../strict-http-response';
 import { RequestBuilder } from '../../request-builder';
 
 import { Company } from '../../models/company';
+import { CreateCompanyDto } from '../../models/create-company-dto';
 
-export interface CompanyGet$Json$Params {
+export interface ApiCompanyPost$Plain$Params {
+      body?: CreateCompanyDto
 }
 
-export function companyGet$Json(http: HttpClient, rootUrl: string, params?: CompanyGet$Json$Params, context?: HttpContext): Observable<StrictHttpResponse<Array<Company>>> {
-  const rb = new RequestBuilder(rootUrl, companyGet$Json.PATH, 'get');
+export function apiCompanyPost$Plain(http: HttpClient, rootUrl: string, params?: ApiCompanyPost$Plain$Params, context?: HttpContext): Observable<StrictHttpResponse<Company>> {
+  const rb = new RequestBuilder(rootUrl, apiCompanyPost$Plain.PATH, 'post');
   if (params) {
+    rb.body(params.body, 'application/*+json');
   }
 
   return http.request(
-    rb.build({ responseType: 'json', accept: 'text/json', context })
+    rb.build({ responseType: 'text', accept: 'text/plain', context })
   ).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
-      return r as StrictHttpResponse<Array<Company>>;
+      return r as StrictHttpResponse<Company>;
     })
   );
 }
 
-companyGet$Json.PATH = '/Company';
+apiCompanyPost$Plain.PATH = '/api/Company';

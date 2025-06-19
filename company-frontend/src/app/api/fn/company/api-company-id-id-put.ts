@@ -8,15 +8,17 @@ import { filter, map } from 'rxjs/operators';
 import { StrictHttpResponse } from '../../strict-http-response';
 import { RequestBuilder } from '../../request-builder';
 
-import { CreateCompanyDto } from '../../models/create-company-dto';
+import { UpdateCompanyDto } from '../../models/update-company-dto';
 
-export interface CompanyPost$Params {
-      body?: CreateCompanyDto
+export interface ApiCompanyIdIdPut$Params {
+  id: number;
+      body?: UpdateCompanyDto
 }
 
-export function companyPost(http: HttpClient, rootUrl: string, params?: CompanyPost$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
-  const rb = new RequestBuilder(rootUrl, companyPost.PATH, 'post');
+export function apiCompanyIdIdPut(http: HttpClient, rootUrl: string, params: ApiCompanyIdIdPut$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
+  const rb = new RequestBuilder(rootUrl, apiCompanyIdIdPut.PATH, 'put');
   if (params) {
+    rb.path('id', params.id, {});
     rb.body(params.body, 'application/*+json');
   }
 
@@ -30,4 +32,4 @@ export function companyPost(http: HttpClient, rootUrl: string, params?: CompanyP
   );
 }
 
-companyPost.PATH = '/Company';
+apiCompanyIdIdPut.PATH = '/api/Company/id/{id}';

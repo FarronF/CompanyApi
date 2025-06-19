@@ -11,23 +11,25 @@ import { BaseService } from '../base-service';
 import { ApiConfiguration } from '../api-configuration';
 import { StrictHttpResponse } from '../strict-http-response';
 
+import { apiCompanyGet$Json } from '../fn/company/api-company-get-json';
+import { ApiCompanyGet$Json$Params } from '../fn/company/api-company-get-json';
+import { apiCompanyGet$Plain } from '../fn/company/api-company-get-plain';
+import { ApiCompanyGet$Plain$Params } from '../fn/company/api-company-get-plain';
+import { apiCompanyIdIdGet$Json } from '../fn/company/api-company-id-id-get-json';
+import { ApiCompanyIdIdGet$Json$Params } from '../fn/company/api-company-id-id-get-json';
+import { apiCompanyIdIdGet$Plain } from '../fn/company/api-company-id-id-get-plain';
+import { ApiCompanyIdIdGet$Plain$Params } from '../fn/company/api-company-id-id-get-plain';
+import { apiCompanyIdIdPut } from '../fn/company/api-company-id-id-put';
+import { ApiCompanyIdIdPut$Params } from '../fn/company/api-company-id-id-put';
+import { apiCompanyIsinIsinGet$Json } from '../fn/company/api-company-isin-isin-get-json';
+import { ApiCompanyIsinIsinGet$Json$Params } from '../fn/company/api-company-isin-isin-get-json';
+import { apiCompanyIsinIsinGet$Plain } from '../fn/company/api-company-isin-isin-get-plain';
+import { ApiCompanyIsinIsinGet$Plain$Params } from '../fn/company/api-company-isin-isin-get-plain';
+import { apiCompanyPost$Json } from '../fn/company/api-company-post-json';
+import { ApiCompanyPost$Json$Params } from '../fn/company/api-company-post-json';
+import { apiCompanyPost$Plain } from '../fn/company/api-company-post-plain';
+import { ApiCompanyPost$Plain$Params } from '../fn/company/api-company-post-plain';
 import { Company } from '../models/company';
-import { companyGet$Json } from '../fn/company/company-get-json';
-import { CompanyGet$Json$Params } from '../fn/company/company-get-json';
-import { companyGet$Plain } from '../fn/company/company-get-plain';
-import { CompanyGet$Plain$Params } from '../fn/company/company-get-plain';
-import { companyIdIdGet$Json } from '../fn/company/company-id-id-get-json';
-import { CompanyIdIdGet$Json$Params } from '../fn/company/company-id-id-get-json';
-import { companyIdIdGet$Plain } from '../fn/company/company-id-id-get-plain';
-import { CompanyIdIdGet$Plain$Params } from '../fn/company/company-id-id-get-plain';
-import { companyPost } from '../fn/company/company-post';
-import { CompanyPost$Params } from '../fn/company/company-post';
-import { idIdPut } from '../fn/company/id-id-put';
-import { IdIdPut$Params } from '../fn/company/id-id-put';
-import { isinIsinGet$Json } from '../fn/company/isin-isin-get-json';
-import { IsinIsinGet$Json$Params } from '../fn/company/isin-isin-get-json';
-import { isinIsinGet$Plain } from '../fn/company/isin-isin-get-plain';
-import { IsinIsinGet$Plain$Params } from '../fn/company/isin-isin-get-plain';
 
 @Injectable({ providedIn: 'root' })
 export class CompanyService extends BaseService {
@@ -35,194 +37,216 @@ export class CompanyService extends BaseService {
     super(config, http);
   }
 
-  /** Path part for operation `companyGet()` */
-  static readonly CompanyGetPath = '/Company';
+  /** Path part for operation `apiCompanyGet()` */
+  static readonly ApiCompanyGetPath = '/api/Company';
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `companyGet$Plain()` instead.
+   * To access only the response body, use `apiCompanyGet$Plain()` instead.
    *
    * This method doesn't expect any request body.
    */
-  companyGet$Plain$Response(params?: CompanyGet$Plain$Params, context?: HttpContext): Observable<StrictHttpResponse<Array<Company>>> {
-    return companyGet$Plain(this.http, this.rootUrl, params, context);
+  apiCompanyGet$Plain$Response(params?: ApiCompanyGet$Plain$Params, context?: HttpContext): Observable<StrictHttpResponse<Array<Company>>> {
+    return apiCompanyGet$Plain(this.http, this.rootUrl, params, context);
   }
 
   /**
    * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `companyGet$Plain$Response()` instead.
+   * To access the full response (for headers, for example), `apiCompanyGet$Plain$Response()` instead.
    *
    * This method doesn't expect any request body.
    */
-  companyGet$Plain(params?: CompanyGet$Plain$Params, context?: HttpContext): Observable<Array<Company>> {
-    return this.companyGet$Plain$Response(params, context).pipe(
+  apiCompanyGet$Plain(params?: ApiCompanyGet$Plain$Params, context?: HttpContext): Observable<Array<Company>> {
+    return this.apiCompanyGet$Plain$Response(params, context).pipe(
       map((r: StrictHttpResponse<Array<Company>>): Array<Company> => r.body)
     );
   }
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `companyGet$Json()` instead.
+   * To access only the response body, use `apiCompanyGet$Json()` instead.
    *
    * This method doesn't expect any request body.
    */
-  companyGet$Json$Response(params?: CompanyGet$Json$Params, context?: HttpContext): Observable<StrictHttpResponse<Array<Company>>> {
-    return companyGet$Json(this.http, this.rootUrl, params, context);
+  apiCompanyGet$Json$Response(params?: ApiCompanyGet$Json$Params, context?: HttpContext): Observable<StrictHttpResponse<Array<Company>>> {
+    return apiCompanyGet$Json(this.http, this.rootUrl, params, context);
   }
 
   /**
    * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `companyGet$Json$Response()` instead.
+   * To access the full response (for headers, for example), `apiCompanyGet$Json$Response()` instead.
    *
    * This method doesn't expect any request body.
    */
-  companyGet$Json(params?: CompanyGet$Json$Params, context?: HttpContext): Observable<Array<Company>> {
-    return this.companyGet$Json$Response(params, context).pipe(
+  apiCompanyGet$Json(params?: ApiCompanyGet$Json$Params, context?: HttpContext): Observable<Array<Company>> {
+    return this.apiCompanyGet$Json$Response(params, context).pipe(
       map((r: StrictHttpResponse<Array<Company>>): Array<Company> => r.body)
     );
   }
 
-  /** Path part for operation `companyPost()` */
-  static readonly CompanyPostPath = '/Company';
+  /** Path part for operation `apiCompanyPost()` */
+  static readonly ApiCompanyPostPath = '/api/Company';
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `companyPost()` instead.
+   * To access only the response body, use `apiCompanyPost$Plain()` instead.
    *
    * This method sends `application/*+json` and handles request body of type `application/*+json`.
    */
-  companyPost$Response(params?: CompanyPost$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
-    return companyPost(this.http, this.rootUrl, params, context);
+  apiCompanyPost$Plain$Response(params?: ApiCompanyPost$Plain$Params, context?: HttpContext): Observable<StrictHttpResponse<Company>> {
+    return apiCompanyPost$Plain(this.http, this.rootUrl, params, context);
   }
 
   /**
    * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `companyPost$Response()` instead.
+   * To access the full response (for headers, for example), `apiCompanyPost$Plain$Response()` instead.
    *
    * This method sends `application/*+json` and handles request body of type `application/*+json`.
    */
-  companyPost(params?: CompanyPost$Params, context?: HttpContext): Observable<void> {
-    return this.companyPost$Response(params, context).pipe(
+  apiCompanyPost$Plain(params?: ApiCompanyPost$Plain$Params, context?: HttpContext): Observable<Company> {
+    return this.apiCompanyPost$Plain$Response(params, context).pipe(
+      map((r: StrictHttpResponse<Company>): Company => r.body)
+    );
+  }
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `apiCompanyPost$Json()` instead.
+   *
+   * This method sends `application/*+json` and handles request body of type `application/*+json`.
+   */
+  apiCompanyPost$Json$Response(params?: ApiCompanyPost$Json$Params, context?: HttpContext): Observable<StrictHttpResponse<Company>> {
+    return apiCompanyPost$Json(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `apiCompanyPost$Json$Response()` instead.
+   *
+   * This method sends `application/*+json` and handles request body of type `application/*+json`.
+   */
+  apiCompanyPost$Json(params?: ApiCompanyPost$Json$Params, context?: HttpContext): Observable<Company> {
+    return this.apiCompanyPost$Json$Response(params, context).pipe(
+      map((r: StrictHttpResponse<Company>): Company => r.body)
+    );
+  }
+
+  /** Path part for operation `apiCompanyIdIdGet()` */
+  static readonly ApiCompanyIdIdGetPath = '/api/Company/id/{id}';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `apiCompanyIdIdGet$Plain()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  apiCompanyIdIdGet$Plain$Response(params: ApiCompanyIdIdGet$Plain$Params, context?: HttpContext): Observable<StrictHttpResponse<Company>> {
+    return apiCompanyIdIdGet$Plain(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `apiCompanyIdIdGet$Plain$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  apiCompanyIdIdGet$Plain(params: ApiCompanyIdIdGet$Plain$Params, context?: HttpContext): Observable<Company> {
+    return this.apiCompanyIdIdGet$Plain$Response(params, context).pipe(
+      map((r: StrictHttpResponse<Company>): Company => r.body)
+    );
+  }
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `apiCompanyIdIdGet$Json()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  apiCompanyIdIdGet$Json$Response(params: ApiCompanyIdIdGet$Json$Params, context?: HttpContext): Observable<StrictHttpResponse<Company>> {
+    return apiCompanyIdIdGet$Json(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `apiCompanyIdIdGet$Json$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  apiCompanyIdIdGet$Json(params: ApiCompanyIdIdGet$Json$Params, context?: HttpContext): Observable<Company> {
+    return this.apiCompanyIdIdGet$Json$Response(params, context).pipe(
+      map((r: StrictHttpResponse<Company>): Company => r.body)
+    );
+  }
+
+  /** Path part for operation `apiCompanyIdIdPut()` */
+  static readonly ApiCompanyIdIdPutPath = '/api/Company/id/{id}';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `apiCompanyIdIdPut()` instead.
+   *
+   * This method sends `application/*+json` and handles request body of type `application/*+json`.
+   */
+  apiCompanyIdIdPut$Response(params: ApiCompanyIdIdPut$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
+    return apiCompanyIdIdPut(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `apiCompanyIdIdPut$Response()` instead.
+   *
+   * This method sends `application/*+json` and handles request body of type `application/*+json`.
+   */
+  apiCompanyIdIdPut(params: ApiCompanyIdIdPut$Params, context?: HttpContext): Observable<void> {
+    return this.apiCompanyIdIdPut$Response(params, context).pipe(
       map((r: StrictHttpResponse<void>): void => r.body)
     );
   }
 
-  /** Path part for operation `companyIdIdGet()` */
-  static readonly CompanyIdIdGetPath = '/Company/id/{id}';
+  /** Path part for operation `apiCompanyIsinIsinGet()` */
+  static readonly ApiCompanyIsinIsinGetPath = '/api/Company/isin/{isin}';
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `companyIdIdGet$Plain()` instead.
+   * To access only the response body, use `apiCompanyIsinIsinGet$Plain()` instead.
    *
    * This method doesn't expect any request body.
    */
-  companyIdIdGet$Plain$Response(params: CompanyIdIdGet$Plain$Params, context?: HttpContext): Observable<StrictHttpResponse<Company>> {
-    return companyIdIdGet$Plain(this.http, this.rootUrl, params, context);
+  apiCompanyIsinIsinGet$Plain$Response(params: ApiCompanyIsinIsinGet$Plain$Params, context?: HttpContext): Observable<StrictHttpResponse<Company>> {
+    return apiCompanyIsinIsinGet$Plain(this.http, this.rootUrl, params, context);
   }
 
   /**
    * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `companyIdIdGet$Plain$Response()` instead.
+   * To access the full response (for headers, for example), `apiCompanyIsinIsinGet$Plain$Response()` instead.
    *
    * This method doesn't expect any request body.
    */
-  companyIdIdGet$Plain(params: CompanyIdIdGet$Plain$Params, context?: HttpContext): Observable<Company> {
-    return this.companyIdIdGet$Plain$Response(params, context).pipe(
+  apiCompanyIsinIsinGet$Plain(params: ApiCompanyIsinIsinGet$Plain$Params, context?: HttpContext): Observable<Company> {
+    return this.apiCompanyIsinIsinGet$Plain$Response(params, context).pipe(
       map((r: StrictHttpResponse<Company>): Company => r.body)
     );
   }
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `companyIdIdGet$Json()` instead.
+   * To access only the response body, use `apiCompanyIsinIsinGet$Json()` instead.
    *
    * This method doesn't expect any request body.
    */
-  companyIdIdGet$Json$Response(params: CompanyIdIdGet$Json$Params, context?: HttpContext): Observable<StrictHttpResponse<Company>> {
-    return companyIdIdGet$Json(this.http, this.rootUrl, params, context);
+  apiCompanyIsinIsinGet$Json$Response(params: ApiCompanyIsinIsinGet$Json$Params, context?: HttpContext): Observable<StrictHttpResponse<Company>> {
+    return apiCompanyIsinIsinGet$Json(this.http, this.rootUrl, params, context);
   }
 
   /**
    * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `companyIdIdGet$Json$Response()` instead.
+   * To access the full response (for headers, for example), `apiCompanyIsinIsinGet$Json$Response()` instead.
    *
    * This method doesn't expect any request body.
    */
-  companyIdIdGet$Json(params: CompanyIdIdGet$Json$Params, context?: HttpContext): Observable<Company> {
-    return this.companyIdIdGet$Json$Response(params, context).pipe(
+  apiCompanyIsinIsinGet$Json(params: ApiCompanyIsinIsinGet$Json$Params, context?: HttpContext): Observable<Company> {
+    return this.apiCompanyIsinIsinGet$Json$Response(params, context).pipe(
       map((r: StrictHttpResponse<Company>): Company => r.body)
-    );
-  }
-
-  /** Path part for operation `isinIsinGet()` */
-  static readonly IsinIsinGetPath = '/isin/{isin}';
-
-  /**
-   * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `isinIsinGet$Plain()` instead.
-   *
-   * This method doesn't expect any request body.
-   */
-  isinIsinGet$Plain$Response(params: IsinIsinGet$Plain$Params, context?: HttpContext): Observable<StrictHttpResponse<Company>> {
-    return isinIsinGet$Plain(this.http, this.rootUrl, params, context);
-  }
-
-  /**
-   * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `isinIsinGet$Plain$Response()` instead.
-   *
-   * This method doesn't expect any request body.
-   */
-  isinIsinGet$Plain(params: IsinIsinGet$Plain$Params, context?: HttpContext): Observable<Company> {
-    return this.isinIsinGet$Plain$Response(params, context).pipe(
-      map((r: StrictHttpResponse<Company>): Company => r.body)
-    );
-  }
-
-  /**
-   * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `isinIsinGet$Json()` instead.
-   *
-   * This method doesn't expect any request body.
-   */
-  isinIsinGet$Json$Response(params: IsinIsinGet$Json$Params, context?: HttpContext): Observable<StrictHttpResponse<Company>> {
-    return isinIsinGet$Json(this.http, this.rootUrl, params, context);
-  }
-
-  /**
-   * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `isinIsinGet$Json$Response()` instead.
-   *
-   * This method doesn't expect any request body.
-   */
-  isinIsinGet$Json(params: IsinIsinGet$Json$Params, context?: HttpContext): Observable<Company> {
-    return this.isinIsinGet$Json$Response(params, context).pipe(
-      map((r: StrictHttpResponse<Company>): Company => r.body)
-    );
-  }
-
-  /** Path part for operation `idIdPut()` */
-  static readonly IdIdPutPath = '/id/{id}';
-
-  /**
-   * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `idIdPut()` instead.
-   *
-   * This method sends `application/*+json` and handles request body of type `application/*+json`.
-   */
-  idIdPut$Response(params: IdIdPut$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
-    return idIdPut(this.http, this.rootUrl, params, context);
-  }
-
-  /**
-   * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `idIdPut$Response()` instead.
-   *
-   * This method sends `application/*+json` and handles request body of type `application/*+json`.
-   */
-  idIdPut(params: IdIdPut$Params, context?: HttpContext): Observable<void> {
-    return this.idIdPut$Response(params, context).pipe(
-      map((r: StrictHttpResponse<void>): void => r.body)
     );
   }
 

@@ -10,22 +10,24 @@ import { RequestBuilder } from '../../request-builder';
 
 import { Company } from '../../models/company';
 
-export interface CompanyGet$Plain$Params {
+export interface ApiCompanyIdIdGet$Json$Params {
+  id: number;
 }
 
-export function companyGet$Plain(http: HttpClient, rootUrl: string, params?: CompanyGet$Plain$Params, context?: HttpContext): Observable<StrictHttpResponse<Array<Company>>> {
-  const rb = new RequestBuilder(rootUrl, companyGet$Plain.PATH, 'get');
+export function apiCompanyIdIdGet$Json(http: HttpClient, rootUrl: string, params: ApiCompanyIdIdGet$Json$Params, context?: HttpContext): Observable<StrictHttpResponse<Company>> {
+  const rb = new RequestBuilder(rootUrl, apiCompanyIdIdGet$Json.PATH, 'get');
   if (params) {
+    rb.path('id', params.id, {});
   }
 
   return http.request(
-    rb.build({ responseType: 'text', accept: 'text/plain', context })
+    rb.build({ responseType: 'json', accept: 'text/json', context })
   ).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
-      return r as StrictHttpResponse<Array<Company>>;
+      return r as StrictHttpResponse<Company>;
     })
   );
 }
 
-companyGet$Plain.PATH = '/Company';
+apiCompanyIdIdGet$Json.PATH = '/api/Company/id/{id}';

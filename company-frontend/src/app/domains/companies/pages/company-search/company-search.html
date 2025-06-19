@@ -1,0 +1,43 @@
+<h1>
+    Company Search
+</h1>
+<form class="search-form">
+    <mat-radio-group aria-label="Select an option" [(ngModel)]="searchType" name="searchType" (change)="onSearchTypeChange($event)">
+        <mat-label>Search by:</mat-label>
+        <mat-radio-button value="id">ID</mat-radio-button>
+        <mat-radio-button value="isin">ISIN</mat-radio-button>
+    </mat-radio-group>
+    <mat-form-field>
+        <mat-label>Search Query</mat-label>
+        <input matInput placeholder="Enter ID/ISIN" [formControl]="searchFormControl" />
+        @if(searchFormControl.invalid && searchFormControl.touched) {
+            <mat-error>
+                @if(searchType === 'id') {
+                    ID must be a number.
+                } @else if(searchType === 'isin') {
+                    ISIN must be exactly 12 characters of numbers and uppercase letters. The first 2 characters must be letters.
+                }
+            </mat-error>
+        } 
+    </mat-form-field>
+    <button matButton="filled" (click)="search()" [disabled]="searchFormControl.invalid || searching()">Search</button> 
+</form>
+<!-- <form class="company-form" [formGroup]="searchForm">
+  <mat-form-field>
+    
+    <input matInput formControlName="name" placeholder="Enter ID/ISIN" />
+  </mat-form-field>
+    <mat-form-field *ngIf="searchForm.get('searchType')?.value === 'id'">
+        <mat-label>ID</mat-label>
+        <input matInput formControlName="name" placeholder="Enter ID" />
+    </mat-form-field>
+    <mat-form-field *ngIf="searchForm.get('searchType')?.value === 'isin'">
+        <mat-label>ISIN</mat-label>
+        <input matInput formControlName="isin" placeholder="Enter ISIN" />
+    </mat-form-field>
+  <div class="button-row">
+    <button matButton="filled" color="primary" type="submit">
+      Find
+    </button>
+  </div>
+</form> -->

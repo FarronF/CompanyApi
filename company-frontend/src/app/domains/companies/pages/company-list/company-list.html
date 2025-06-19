@@ -1,0 +1,60 @@
+@if (loading()) {
+  <mat-spinner></mat-spinner>
+}
+
+@else {
+  @if (companies.length === 0 ) {
+    <p>No companies found.</p>
+  }
+
+  @else {
+    <h1>All companies</h1>
+    <table mat-table [dataSource]="companies" class="mat-elevation-z8">
+
+
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef> Id. </th>
+        <td mat-cell *matCellDef="let company"> {{company.id}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef> Name </th>
+        <td mat-cell *matCellDef="let company"> {{company.name}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="ticker">
+        <th mat-header-cell *matHeaderCellDef> Ticker </th>
+        <td mat-cell *matCellDef="let company"> {{company.ticker}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="isin">
+        <th mat-header-cell *matHeaderCellDef> ISIN </th>
+        <td mat-cell *matCellDef="let company"> {{company.isin}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="exchange">
+        <th mat-header-cell *matHeaderCellDef> Exchange </th>
+        <td mat-cell *matCellDef="let company"> {{company.exchange}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="website">
+        <th mat-header-cell *matHeaderCellDef> Website </th>
+        <td mat-cell *matCellDef="let company"> <a href="{{company.website}}" target="blank">{{company.website}}</a> </td>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let company">
+            <button matIconButton [routerLink]="['/view', company.id]">
+              <mat-icon>visibility</mat-icon>
+            </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  }
+}
+
+

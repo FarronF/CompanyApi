@@ -10,14 +10,12 @@ import { RequestBuilder } from '../../request-builder';
 
 import { Company } from '../../models/company';
 
-export interface CompanyIdIdGet$Plain$Params {
-  id: number;
+export interface ApiCompanyGet$Plain$Params {
 }
 
-export function companyIdIdGet$Plain(http: HttpClient, rootUrl: string, params: CompanyIdIdGet$Plain$Params, context?: HttpContext): Observable<StrictHttpResponse<Company>> {
-  const rb = new RequestBuilder(rootUrl, companyIdIdGet$Plain.PATH, 'get');
+export function apiCompanyGet$Plain(http: HttpClient, rootUrl: string, params?: ApiCompanyGet$Plain$Params, context?: HttpContext): Observable<StrictHttpResponse<Array<Company>>> {
+  const rb = new RequestBuilder(rootUrl, apiCompanyGet$Plain.PATH, 'get');
   if (params) {
-    rb.path('id', params.id, {});
   }
 
   return http.request(
@@ -25,9 +23,9 @@ export function companyIdIdGet$Plain(http: HttpClient, rootUrl: string, params: 
   ).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
-      return r as StrictHttpResponse<Company>;
+      return r as StrictHttpResponse<Array<Company>>;
     })
   );
 }
 
-companyIdIdGet$Plain.PATH = '/Company/id/{id}';
+apiCompanyGet$Plain.PATH = '/api/Company';
