@@ -13,20 +13,6 @@ services:
       timeout: 5s
       retries: 10   
 
-  # migrator:
-  #   build:
-  #     context: .
-  #     dockerfile: CompanyApi/Dockerfile
-  #     target: build 
-  #   environment:
-  #     - ASPNETCORE_ENVIRONMENT=Development
-  #     - ConnectionStrings__DefaultConnection=Server=db,1433;Database=CompanyDb;User Id=sa;Password=VeryStr0ng!Passw0rd;TrustServerCertificate=True
-  #   depends_on:
-  #     db:
-  #       condition: service_healthy
-  #   entrypoint: ["dotnet", "ef", "database", "update", "--project", "CompanyApi/CompanyApi.csproj", "--startup-project", "CompanyApi/CompanyApi.csproj"]
-
-
   api:
     build:
       context: .
@@ -36,6 +22,18 @@ services:
       - ConnectionStrings__DefaultConnection=Server=db,1433;Database=CompanyDb;User Id=sa;Password=VeryStr0ng!Passw0rd;TrustServerCertificate=True
     ports:
       - "8080:8080"
+      - "8081:8081"
     depends_on:
       db:
         condition: service_healthy
+
+  frontend:
+    build:
+      context: ./company-frontend
+      dockerfile: Dockerfile
+    ports:
+      - "4300:4200"
+      - "4301:4201"
+    depends_on:
+      - api
+

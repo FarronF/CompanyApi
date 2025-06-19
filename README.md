@@ -24,3 +24,7 @@ This will build and start all containers defined in `docker-compose.yml`.
 
 Press `Ctrl+C` in the terminal, then run:
 `docker-compose down`
+
+## Potential improvements
+- UI makes a lot of calls to the API, which can be optimized by caching the data on the client side.
+- Error messages on UI are rudimentary, could be improved with more context and user-friendly messages.
