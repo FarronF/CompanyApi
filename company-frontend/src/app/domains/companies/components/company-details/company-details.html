@@ -7,5 +7,12 @@
         <p><strong>Exchange:</strong> {{ company()?.exchange }}</p>
         <p><strong>ISIN:</strong> {{ company()?.isin }}</p>
         <p><strong>ID:</strong> {{ company()?.id }}</p>
+        <p><strong>Website:</strong> 
+            @if (company()?.website) {
+                <a href="{{ company()?.website }}" target="_blank">{{ company()?.website }}</a>
+            } @else {
+                <span>N/A</span>    
+            }
+        </p>
     </mat-card-content>
     </mat-card>
