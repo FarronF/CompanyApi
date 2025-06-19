@@ -31,5 +31,5 @@ Note that database migrations are automatically applied on application startup. 
 ## Potential improvements
 - The frontend currently runs in development mode within Docker; consider configuring it to use nginx for production readiness.
 - UI makes a lot of calls to the API, which can be optimized by caching the data on the client side.
-- Error messages on UI are rudimentary, could be improved with more context and user-friendly messages.
+- Error messages on UI are rudimentary, could be improved with more context and user-friendly messages. i.e. if has duplicate name or isin it only gives generic error, it would be better if this was clear as to why.
 - Database migrations run on every startup; ideally , they should be run manually or as part of a CI/CD pipeline.
