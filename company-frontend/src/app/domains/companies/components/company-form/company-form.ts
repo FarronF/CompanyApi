@@ -53,7 +53,7 @@ export class CompanyForm {
         Validators.required,
         Validators.minLength(12),
         Validators.maxLength(12),
-        Validators.pattern(/^[A-Z]{2}[A-Z0-9]{9}[0-9]$/),
+        Validators.pattern(/^[A-Z]{2}[A-Z0-9]{10}$/),
       ]),
       website: formBuilder.control(''),
     });
