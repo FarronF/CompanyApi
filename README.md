@@ -25,6 +25,11 @@ This will build and start all containers defined in `docker-compose.yml`.
 Press `Ctrl+C` in the terminal, then run:
 `docker-compose down`
 
+## Database Migrations
+Note that database migrations are automatically applied on application startup. However if there are any changes to the code the migraions will need to be generated, see CompanyApi/README.md for details.
+
 ## Potential improvements
+- The frontend currently runs in development mode within Docker; consider configuring it to use nginx for production readiness.
 - UI makes a lot of calls to the API, which can be optimized by caching the data on the client side.
 - Error messages on UI are rudimentary, could be improved with more context and user-friendly messages.
+- Database migrations run on every startup; ideally , they should be run manually or as part of a CI/CD pipeline.
