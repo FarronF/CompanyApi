@@ -28,6 +28,7 @@ Press `Ctrl+C` in the terminal, then run:
 `docker-compose down`
 
 ## Database Migrations
+The application uses Entity Framework Core with a code-first approach for database management. All migrations are located in the `CompanyApi` project.
 Note that database migrations are automatically applied on application startup. However if there are any changes to the code the migrations will need to be generated, see CompanyApi/README.md for details.
 
 ## Potential improvements
