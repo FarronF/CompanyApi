@@ -12,7 +12,7 @@ import {
   UpdateCompanyDto,
   mapUpdateCompanyDtoToApi,
 } from '@app/domains/companies/models/update-company-dto';
-import { map, Observable, tap } from 'rxjs';
+import { map, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -21,12 +21,13 @@ export class CompanyDataService {
   constructor(private companyApiService: CompanyService) {}
 
   getCompanies(): Observable<Company[]> {
-    return this.companyApiService.apiCompanyGet$Json().pipe(
-      tap((companies) => console.log('Companies fetched:', companies)),
-      map((companies) =>
-        companies?.map((company) => mapApiCompanyToUi(company))
-      )
-    );
+    return this.companyApiService
+      .apiCompanyGet$Json()
+      .pipe(
+        map((companies) =>
+          companies?.map((company) => mapApiCompanyToUi(company))
+        )
+      );
   }
 
   getCompanyById(id: number): Observable<Company> {
@@ -55,7 +56,6 @@ export class CompanyDataService {
     return this.companyApiService
       .apiCompanyPost$Json$Response({ body: apiDto })
       .pipe(
-        tap((response) => console.log(response)),
         map((response) => {
           if (!response.ok || !response.body) return [false, null];
           const createdCompany = mapApiCompanyToUi(response.body);

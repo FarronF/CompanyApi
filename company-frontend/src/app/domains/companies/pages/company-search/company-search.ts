@@ -108,7 +108,7 @@ export class CompanySearch implements OnInit {
         if (err.status === 404) {
           this.showCouldNotFindMessage();
         } else {
-          console.error('An error occurred:', err);
+          this.popupMessageService.error('An error occurred');
         }
         this.searching.set(false);
       },
