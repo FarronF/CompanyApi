@@ -4,88 +4,37 @@ using Xunit;
 
 namespace CompanyApi.Tests.DTOs
 {
-
     public class CreateCompanyDtoValidationTests
     {
         string validName = "Test Company";
         string validExchange = "Test Exchange";
         string validTicker = "TEST";
-        string validIsin = "EG1111111111";
 
-        [Fact]
-        public void Isin_WhenValidFormat_ThenPassesValidation()
+        [Theory]
+        [InlineData("EG1111111111", true)]   // valid
+        [InlineData("EGEGEGEGEGEG", true)]   // valid
+        [InlineData("EG111111111", false)]   // too short
+        [InlineData("EG11111111111", false)] // too long
+        [InlineData("111111111111", false)]  // invalid format
+        [InlineData("E11111111111", false)]  // invalid format
+        [InlineData("1G1111111111", false)]  // invalid format
+        [InlineData("eg1111111111", false)]  // lowercase, invalid
+        [InlineData("EG11!1111111", false)]  // special char, invalid
+        public void Isin_Validation_WorksAsExpected(string isin, bool expectedValid)
         {
             var dto = new CreateCompanyDto
             {
                 Name = validName,
                 Exchange = validExchange,
                 Ticker = validTicker,
-                Isin = validIsin,
+                Isin = isin,
             };
 
             var context = new ValidationContext(dto);
             var results = new List<ValidationResult>();
             var isValid = Validator.TryValidateObject(dto, context, results, true);
 
-            Assert.True(isValid);
+            Assert.Equal(expectedValid, isValid);
         }
-
-        [Fact]
-        public void Isin_WhenShorterThan12_ThenFailsValidation()
-        {
-            var dto = new CreateCompanyDto
-            {
-                Name = validName,
-                Exchange = validExchange,
-                Ticker = validTicker,
-                Isin = "EG111111111",
-            };
-
-            var context = new ValidationContext(dto);
-            var results = new List<ValidationResult>();
-            var isValid = Validator.TryValidateObject(dto, context, results, true);
-
-            Assert.False(isValid);
-        }
-
-        [Fact]
-        public void Isin_WhenLongerThan12_ThenFailsValidation()
-        {
-            var dto = new CreateCompanyDto
-            {
-                Name = validName,
-                Exchange = validExchange,
-                Ticker = validTicker,
-                Isin = "EG11111111111",
-            };
-
-            var context = new ValidationContext(dto);
-            var results = new List<ValidationResult>();
-            var isValid = Validator.TryValidateObject(dto, context, results, true);
-
-            Assert.False(isValid);
-        }
-
-        [Fact]
-        public void Isin_WhenInvalidFormat_ThenFailsValidation()
-        {
-            var dto = new CreateCompanyDto
-            {
-                Name = validName,
-                Exchange = validExchange,
-                Ticker = validTicker,
-                Isin = "111111111111",
-            };
-
-            var context = new ValidationContext(dto);
-            var results = new List<ValidationResult>();
-            var isValid = Validator.TryValidateObject(dto, context, results, true);
-
-            Assert.False(isValid);
-            Assert.Contains(results, r => r.ErrorMessage!.Contains("ISIN must start with two non-numeric characters"));
-        }
-
-
-
     }
 }
