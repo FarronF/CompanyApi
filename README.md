@@ -3,15 +3,19 @@
 
 ### Prerequisites
 
-- [Docker Desktop](https://www.docker.com/products/docker-desktop/) installed
+- [Docker Desktop](https://www.docker.com/products/docker-desktop/) installed and running.
 
 ### Quick Start
 
 1. **Clone the repository** (if you haven't already):
-
+```bash
+https://github.com/FarronF/CompanyApi.git`
+```
 
 2. **Build and run all services**:
-`docker-compose up --build`
+```bash
+docker-compose up --build
+```
 
 This will build and start all containers defined in `docker-compose.yml`.
 
@@ -25,7 +29,9 @@ This will build and start all containers defined in `docker-compose.yml`.
 4. **Shut down**:
 
 Press `Ctrl+C` in the terminal, then run:
-`docker-compose down`
+```bash
+docker-compose down
+```
 
 ## Database Migrations
 The application uses Entity Framework Core with a code-first approach for database management. All migrations are located in the `CompanyApi` project.

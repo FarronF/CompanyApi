@@ -10,17 +10,24 @@ A .NET 8 Web API for managing company data.
 ## Getting Started
 
 ### 1. Clone the repository
-`git clone <your-repo-url> cd CompanyApi`
+```bash
+git clone https://github.com/FarronF/CompanyApi.git
+cd CompanyApi`
+```
 
 ### 2. Configure the database
 Update `appsettings.json` or `appsettings.Development.json` with your SQL Server connection string.
 
 ### 3. Run database migrations
 (optional) this will be run automatically on application start
-`dotnet ef database update`
+```bash
+dotnet ef database update
+```
 
 ### 4. Run the API
-`dotnet run`
+```
+dotnet run
+```
 
 The API will be available at `http://localhost:5000` (by default).
 
@@ -48,7 +55,10 @@ Or use the solution-level `docker-compose.yml` for multi-service orchestration.
 ## Useful Commands
 If changes are made to the database models, you need to create a new migration and update the database:
 - Add migration:  
-  `dotnet ef migrations add <MigrationName>`
-
+```bash
+- dotnet ef migrations add <MigrationName>`
+```
 - Update database:  
+```bash
   `dotnet ef database update`
+```
