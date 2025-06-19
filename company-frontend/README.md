@@ -11,7 +11,7 @@ npm start
 ```
 
 This will also set up a proxy based on proxy.conf.json
-By default this requires CompanApi solution to be running on `https://localhost:5001`
+By default this requires CompanyApi to be running on `https://localhost:5001`
 
 Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
 
