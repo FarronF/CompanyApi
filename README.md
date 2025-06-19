@@ -17,7 +17,9 @@ This will build and start all containers defined in `docker-compose.yml`.
 
 3. **Access the API**:
 
-- The API should be available at: [https://localhost:5001/swagger](https://localhost:5001/swagger) 
+- The API should be available at: [http://localhost:8080/swagger](https://localhost:8080/swagger) 
+  (or the port specified in your `docker-compose.yml`)
+- The frontend should be available at: [http://localhost:4300/](http://localhost:4300/) 
   (or the port specified in your `docker-compose.yml`)
 
 4. **Shut down**:
