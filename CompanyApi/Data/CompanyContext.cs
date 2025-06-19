@@ -12,8 +12,7 @@ namespace CompanyApi.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Company>().HasIndex(c => c.Isin).IsUnique();
-            modelBuilder.Entity<Company>().HasIndex(c => c.Ticker).IsUnique();
-            modelBuilder.Entity<Company>().HasIndex(c => c.Name);
+            modelBuilder.Entity<Company>().HasIndex(c => c.Name).IsUnique();
 
             modelBuilder.Entity<Company>().HasData(
                 new Company
