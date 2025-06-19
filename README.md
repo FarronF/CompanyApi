@@ -9,7 +9,7 @@
 
 1. **Clone the repository** (if you haven't already):
 ```bash
-https://github.com/FarronF/CompanyApi.git`
+git clone https://github.com/FarronF/CompanyApi.git`
 ```
 
 2. **Build and run all services**:
