@@ -45,9 +45,10 @@
       <ng-container matColumnDef="actions">
         <th mat-header-cell *matHeaderCellDef></th>
         <td mat-cell *matCellDef="let company">
-            <button matIconButton [routerLink]="['/view', company.id]">
+            <a matButton="outlined" [routerLink]="['/view', company.id]">
               <mat-icon>visibility</mat-icon>
-            </button>
+              View
+            </a>
         </td>
       </ng-container>
 

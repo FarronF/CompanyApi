@@ -1,11 +1,11 @@
 import { Component, signal } from '@angular/core';
 import { CompanyDataService } from '@app/services/company-data-service';
-import { Observable } from 'rxjs';
 import { Company } from '../../models/company';
 import { MatTableModule } from '@angular/material/table';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterModule } from '@angular/router';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-company-list',
@@ -14,6 +14,7 @@ import { RouterModule } from '@angular/router';
     MatProgressSpinnerModule,
     MatIconModule,
     RouterModule,
+    MatButtonModule,
   ],
   templateUrl: './company-list.html',
   styleUrl: './company-list.scss',
