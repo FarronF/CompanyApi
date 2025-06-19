@@ -95,6 +95,15 @@ namespace CompanyApi.Controllers
                 return BadRequest(ModelState);
             }
 
+            if(_context.Companies.Any(c => c.Name == dto.Name))
+            {
+                return BadRequest(new { Name = "A company with this Name already exists." });
+            }
+            if(_context.Companies.Any(c => c.Isin == dto.Isin))
+            {
+                return BadRequest(new { Isin = "A company with this ISIN already exists." });
+            }
+
             var company = new Company
             {
                 Name = dto.Name,
@@ -143,6 +152,15 @@ namespace CompanyApi.Controllers
             if (company == null)
             {
                 return NotFound();
+            }
+
+            if (!string.IsNullOrEmpty(dto.Name) && _context.Companies.Any(c => c.Id != id && c.Name == dto.Name))
+            {
+                return BadRequest(new { Name = "A company with this Name already exists." });                
+            }
+            if (!string.IsNullOrEmpty(dto.Isin) && _context.Companies.Any(c => c.Id != id && c.Isin == dto.Isin))
+            {
+                return BadRequest(new { Isin = "A company with this ISIN already exists." });              
             }
 
             company.Name = dto.Name ?? company.Name;

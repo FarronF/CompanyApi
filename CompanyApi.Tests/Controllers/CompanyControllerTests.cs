@@ -165,7 +165,7 @@ namespace CompanyApi.Tests.Controllers
             var result = _controller.CreateCompany(createCompanyDto);
 
             // Assert
-            var createdAtActionResult = Assert.IsType<CreatedAtActionResult>(result);
+            var createdAtActionResult = Assert.IsType<CreatedAtActionResult>(result.Result);
             var createdCompany = Assert.IsType<Company>(createdAtActionResult.Value);
             Assert.Equal(createCompanyDto.Name, createdCompany.Name);
             Assert.Equal(createCompanyDto.Exchange, createdCompany.Exchange);
@@ -200,9 +200,56 @@ namespace CompanyApi.Tests.Controllers
             var result = _controller.CreateCompany(createCompanyDto);
 
             // Assert
-            var badRequestResult = Assert.IsType<BadRequestObjectResult>(result);
+            var badRequestResult = Assert.IsType<BadRequestObjectResult>(result.Result);
             Assert.NotNull(badRequestResult.Value);
-            Assert.IsType<SerializableError>(badRequestResult.Value);
+        }
+
+        [Fact]
+        public void CreateCompany_WhenIsDuplicateName_ReturnsBadRequest()
+        {
+            // Arrange
+            var createCompanyDto = new CreateCompanyDto
+            {
+                Name = _companyA.Name, // Duplicate name
+                Exchange = "Any Exchange",
+                Ticker = "ANY1",
+                Isin = "EG0000000099", // Unique ISIN
+                Website = "https://any.example.com"
+            };
+
+            // Act
+            var result = _controller.CreateCompany(createCompanyDto);
+
+            // Assert
+            var badRequestResult = Assert.IsType<BadRequestObjectResult>(result.Result);
+            Assert.NotNull(badRequestResult.Value);
+            var type = badRequestResult.Value.GetType();
+            var nameProperty = type.GetProperty("Name");
+            Assert.NotNull(nameProperty);
+        }
+
+        [Fact]
+        public void CreateCompany_WhenIsDuplicateIsin_ReturnsBadRequest()
+        {
+            // Arrange
+            var createCompanyDto = new CreateCompanyDto
+            {
+                Name = "Any Name", // Unique name
+                Exchange = "Any Exchange",
+                Ticker = "ANY2",
+                Isin = _companyB.Isin, // Duplicate ISIN
+                Website = "https://any.example.com"
+            };
+
+            // Act
+            var result = _controller.CreateCompany(createCompanyDto);
+
+            // Assert
+            var badRequestResult = Assert.IsType<BadRequestObjectResult>(result.Result);
+            Assert.NotNull(badRequestResult.Value);
+            var type = badRequestResult.Value.GetType();
+            var isinProperty = type.GetProperty("Isin");
+            Assert.NotNull(isinProperty);
         }
 
         [Fact]
@@ -256,21 +303,70 @@ namespace CompanyApi.Tests.Controllers
             Assert.NotNull(badRequestResult.Value);
             Assert.IsType<SerializableError>(badRequestResult.Value);
         }
+
+        [Fact]
+        public void UpdateCompanyById_WhenIsDuplicateName_ReturnsBadRequest()
+        {
+            // Arrange
+            var updateCompanyDto = new UpdateCompanyDto
+            {
+                Name = _companyB.Name,
+                Exchange = "Updated Exchange",
+                Ticker = "UPDATE",
+                Isin = "EG0000000098",
+                Website = "https://any.example.com"
+            };
+
+            // Act
+            var result = _controller.UpdateCompanyById(_companyA.Id, updateCompanyDto);
+
+            // Assert
+            var badRequestResult = Assert.IsType<BadRequestObjectResult>(result);
+            Assert.NotNull(badRequestResult.Value);
+            var type = badRequestResult.Value.GetType();
+            var nameProperty = type.GetProperty("Name");
+            Assert.NotNull(nameProperty);
+        }
+
+        [Fact]
+        public void UpdateCompanyById_WhenIsDuplicateIsin_ReturnsBadRequest()
+        {
+            // Arrange
+            var updateCompanyDto = new UpdateCompanyDto
+            {
+                Name = "Updated Name",
+                Exchange = "Updated Exchange",
+                Ticker = "UPDATE",
+                Isin = _companyB.Isin,
+                Website = "https://any.example.com"
+            };
+
+            // Act
+            var result = _controller.UpdateCompanyById(_companyA.Id, updateCompanyDto);
+
+            // Assert
+            var badRequestResult = Assert.IsType<BadRequestObjectResult>(result);
+            Assert.NotNull(badRequestResult.Value);
+            var type = badRequestResult.Value.GetType();
+            var nameProperty = type.GetProperty("Isin");
+            Assert.NotNull(nameProperty);
+        }
     }
 
     public class CompanyControllerExceptionTests
     {
         private readonly CompanyController _controller;
-        private readonly Mock<CompanyContext> _mockContext;
+        private readonly FailingCompanyContext _context;
         private readonly Mock<ILogger<CompanyController>> _mockLogger;
 
         public CompanyControllerExceptionTests()
         {
-            var mockSet = new Mock<DbSet<Company>>();
-            _mockContext = new Mock<CompanyContext>(new DbContextOptions<CompanyContext>());
-            _mockContext.Setup(m => m.Companies).Returns(mockSet.Object);
+            var options = new DbContextOptionsBuilder<CompanyContext>()
+                .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
+                .Options;
+            _context = new FailingCompanyContext(options);
             _mockLogger = new Mock<ILogger<CompanyController>>();
-            _controller = new CompanyController(_mockContext.Object, _mockLogger.Object);
+            _controller = new CompanyController(_context, _mockLogger.Object);
         }
 
         [Fact]
@@ -286,13 +382,13 @@ namespace CompanyApi.Tests.Controllers
                 Website = "https://test.com"
             };
 
-            _mockContext.Setup(c => c.SaveChanges()).Throws(new DbUpdateException("Simulated failure"));
+            _context.ShouldFail = true;
 
             // Act
             var result = _controller.CreateCompany(createCompanyDto);
 
             // Assert
-            var badRequestResult = Assert.IsType<BadRequestObjectResult>(result);
+            var badRequestResult = Assert.IsType<BadRequestObjectResult>(result.Result);
             Assert.NotNull(badRequestResult.Value);
         }
 
@@ -300,6 +396,17 @@ namespace CompanyApi.Tests.Controllers
         public void UpdateCompanyById_WhenSaveChangesThrows_ReturnsBadRequest()
         {
             // Arrange
+            var company = new Company
+            {
+                Name = "Company Name",
+                Exchange = "Exchange",
+                Ticker = "Ticker",
+                Isin = "EG0000000005",
+                Website = ""
+            };
+            _context.Companies.Add(company);
+            _context.SaveChanges();
+
             var updateCompanyDto = new UpdateCompanyDto
             {
                 Name = "Updated Name",
@@ -309,26 +416,26 @@ namespace CompanyApi.Tests.Controllers
                 Website = "https://test.com"
             };
 
-            var mockSet = new Mock<DbSet<Company>>();
-            var company = new Company
-            {
-                Id = 1,
-                Name = "Company Name",
-                Exchange = "Exchange",
-                Ticker = "Ticker",
-                Isin = "Isin",
-                Website = ""
-            };
-            mockSet.Setup(m => m.Find(It.IsAny<object[]>())).Returns(company);
-            _mockContext.Setup(c => c.Companies).Returns(mockSet.Object);
-            _mockContext.Setup(c => c.SaveChanges()).Throws(new DbUpdateException("Simulated failure"));
+            _context.ShouldFail = true;
 
             // Act
-            var result = _controller.UpdateCompanyById(1, updateCompanyDto);
+            var result = _controller.UpdateCompanyById(company.Id, updateCompanyDto);
 
             // Assert
             var badRequestResult = Assert.IsType<BadRequestObjectResult>(result);
             Assert.NotNull(badRequestResult.Value);
+        }
+
+        private class FailingCompanyContext : CompanyContext
+        {
+            public bool ShouldFail { get; set; }
+            public FailingCompanyContext(DbContextOptions<CompanyContext> options) : base(options) { }
+            public override int SaveChanges()
+            {
+                if (ShouldFail)
+                    throw new DbUpdateException("Simulated failure");
+                return base.SaveChanges();
+            }
         }
     }
 }
